@@ -1,4 +1,7 @@
 package org.farfenix.repository;
 
-public class BookedRoomRepository {
+import org.farfenix.model.BookedRoom;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface BookedRoomRepository extends JpaRepository<BookedRoom, Long> {
 }
