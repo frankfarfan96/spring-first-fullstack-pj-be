@@ -1,10 +1,9 @@
 package org.farfenix.service;
 
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.farfenix.model.Room;
 import org.farfenix.repository.RoomRepository;
-import org.farfenix.response.RoomResponse;
+import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.sql.rowset.serial.SerialBlob;
@@ -13,6 +12,7 @@ import java.math.BigDecimal;
 import java.sql.Blob;
 import java.sql.SQLException;
 
+@Service
 @RequiredArgsConstructor
 public class RoomServiceImpl implements IRoomService{
     private final RoomRepository roomRepository;
