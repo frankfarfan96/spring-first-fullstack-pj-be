@@ -3,7 +3,6 @@ package org.farfenix.model;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.apache.commons.lang3.RandomStringUtils;
 
@@ -11,7 +10,6 @@ import java.math.BigDecimal;
 import java.sql.Blob;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 @Entity
 @Getter

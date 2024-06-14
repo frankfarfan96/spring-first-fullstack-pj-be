@@ -19,7 +19,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
@@ -47,7 +46,7 @@ public class RoomController {
         return roomService.getAllRoomTypes();
     }
 
-
+    @GetMapping("/all-rooms")
     public ResponseEntity<List<RoomResponse>> getAllRooms() throws SQLException {
         List<Room> rooms = roomService.getAllRooms();
         List<RoomResponse> roomResponses = new ArrayList<>();
@@ -66,12 +65,12 @@ public class RoomController {
 
     private RoomResponse getRoomResponse(Room room) {
         List<BookedRoom> bookings = getAllBookingsByRoomId(room.getId());
-        List<BookingResponse> bookingInfo = bookings
-                .stream()
-                .map(booking ->new BookingResponse(booking.getBookingId(),
-                                                    booking.getCheckInDate(),
-                                                    booking.getCheckOutDate(),
-                                                    booking.getBookingConfirmationCode())).toList();
+//        List<BookingResponse> bookingInfo = bookings
+//                .stream()
+//                .map(booking ->new BookingResponse(booking.getBookingId(),
+//                                                    booking.getCheckInDate(),
+//                                                    booking.getCheckOutDate(),
+//                                                    booking.getBookingConfirmationCode())).toList();
 
         byte[] photoBytes = null;
         Blob photoBlob = room.getPhoto();
@@ -88,8 +87,7 @@ public class RoomController {
                 room.getRoomType(),
                 room.getRoomPrice(),
                 room.isBooked(),
-                photoBytes,
-                bookingInfo);
+                photoBytes);
     }
 
     private List<BookedRoom> getAllBookingsByRoomId(Long roomId) {

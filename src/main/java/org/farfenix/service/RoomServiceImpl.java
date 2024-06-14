@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.farfenix.exception.ResourceNotFoundException;
 import org.farfenix.model.Room;
 import org.farfenix.repository.RoomRepository;
-import org.springframework.boot.context.config.ConfigDataResourceNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
