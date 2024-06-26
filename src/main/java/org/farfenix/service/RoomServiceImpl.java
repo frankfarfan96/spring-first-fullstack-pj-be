@@ -83,7 +83,7 @@ public class RoomServiceImpl implements IRoomService{
             try {
                 room.setPhoto(new SerialBlob(photoBytes));
             } catch (SQLException ex) {
-                throw new InternalServerException("E rror updating room");
+                throw new InternalServerException("Error updating room");
             }
         }
         return roomRepository.save(room);
