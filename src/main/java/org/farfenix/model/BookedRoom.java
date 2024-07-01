@@ -26,9 +26,9 @@ public class BookedRoom {
     @Column(name = "guest_Email")
     private String guestEmail;
     @Column(name = "adults")
-    private int NumOfAdults;
+    private int numOfAdults;
     @Column(name = "children")
-    private int NumOfChildren;
+    private int numOfChildren;
     @Column(name = "total_guest")
     private int totalNumGuest;
     @Column(name = "confirmation_Code")
@@ -45,16 +45,14 @@ public class BookedRoom {
 
 
     public void calculateTotalNumberOfGuest() {
-        this.totalNumGuest = this.NumOfAdults + this.NumOfChildren;
+        this.totalNumGuest = this.numOfAdults + this.numOfChildren;
     }
 
     public void setNumOfAdults(int numOfAdults) {
-        NumOfAdults = numOfAdults;
         calculateTotalNumberOfGuest();
     }
 
     public void setNumOfChildren(int numOfChildren) {
-        NumOfChildren = numOfChildren;
         calculateTotalNumberOfGuest();
     }
 
