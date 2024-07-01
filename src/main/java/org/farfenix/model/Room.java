@@ -41,7 +41,7 @@ public class Room {
         bookings.add(booking);
         booking.setRoom(this);
         isBooked = true;
-        String bookingCode = RandomStringUtils.random(10);
+        String bookingCode = RandomStringUtils.randomNumeric(10);
         booking.setBookingConfirmationCode(bookingCode);
     }
 }
