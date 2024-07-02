@@ -2,6 +2,7 @@ package org.farfenix.service;
 
 import lombok.RequiredArgsConstructor;
 import org.farfenix.exception.InvalidBookingRequestException;
+import org.farfenix.exception.ResourceNotFoundException;
 import org.farfenix.model.BookedRoom;
 import org.farfenix.model.Room;
 import org.farfenix.repository.BookingRepository;
@@ -53,7 +54,8 @@ public class BookingServiceImpl implements IBookingService {
 
     @Override
     public BookedRoom findByBookingConfirmationCode(String confirmationCode) {
-        return bookingRepository.findByBookingConfirmationCode(confirmationCode);
+        return bookingRepository.findByBookingConfirmationCode(confirmationCode)
+                .orElseThrow(() -> new ResourceNotFoundException("No booking found with booking code : " + confirmationCode));
     }
 
     private boolean roomIsAvailable(BookedRoom bookingRequest, List<BookedRoom> existingBookings) {
