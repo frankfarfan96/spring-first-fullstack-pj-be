@@ -9,6 +9,7 @@ import org.farfenix.response.BookingResponse;
 import org.farfenix.response.RoomResponse;
 import org.farfenix.service.IBookingService;
 import org.farfenix.service.IRoomService;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,6 +20,7 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.sql.Blob;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
@@ -103,14 +105,41 @@ public class RoomController {
         }).orElseThrow(() -> new ResourceNotFoundException("Room not found"));
     }
 
+    @GetMapping("/available-rooms")
+    public ResponseEntity<List<RoomResponse>> getAvailableRooms(@RequestParam("checkInDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDateTime checkInDate,
+                                                                @RequestParam("checkOutDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDateTime checkOutDate,
+                                                                @RequestParam("roomType") String roomType) throws SQLException {
+        List<Room> availableRooms = roomService.getAvailableRooms(checkInDate, checkOutDate, roomType);
+        List<RoomResponse> roomResponses = new ArrayList<>();
+
+        for(Room room : availableRooms) {
+            byte[] photoBytes = roomService.getRoomPhotoByRoomId(room.getId());
+            if (photoBytes != null && photoBytes.length > 0) {
+                String photoBase64 = Base64.getEncoder().encodeToString(photoBytes);
+                RoomResponse roomResponse = getRoomResponse(room);
+                roomResponse.setPhoto(photoBase64);
+                roomResponses.add(roomResponse);
+            }
+        }
+
+        if (roomResponses.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        } else {
+            return ResponseEntity.ok(roomResponses);
+        }
+
+    }
+
+
+
     private RoomResponse getRoomResponse(Room room) {
         List<BookedRoom> bookings = getAllBookingsByRoomId(room.getId());
-//        List<BookingResponse> bookingInfo = bookings
-//                .stream()
-//                .map(booking ->new BookingResponse(booking.getBookingId(),
-//                                                    booking.getCheckInDate(),
-//                                                    booking.getCheckOutDate(),
-//                                                    booking.getBookingConfirmationCode())).toList();
+        List<BookingResponse> bookingInfo = bookings
+                .stream()
+                .map(booking ->new BookingResponse(booking.getBookingId(),
+                                                    booking.getCheckInDate(),
+                                                    booking.getCheckOutDate(),
+                                                    booking.getBookingConfirmationCode())).toList();
 
         byte[] photoBytes = null;
         Blob photoBlob = room.getPhoto();
@@ -127,7 +156,8 @@ public class RoomController {
                 room.getRoomType(),
                 room.getRoomPrice(),
                 room.isBooked(),
-                photoBytes);
+                photoBytes,
+                bookingInfo);
     }
 
     private List<BookedRoom> getAllBookingsByRoomId(Long roomId) {
