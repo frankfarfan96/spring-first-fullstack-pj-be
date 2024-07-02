@@ -49,10 +49,12 @@ public class BookedRoom {
     }
 
     public void setNumOfAdults(int numOfAdults) {
+        this.numOfAdults = numOfAdults;
         calculateTotalNumberOfGuest();
     }
 
     public void setNumOfChildren(int numOfChildren) {
+        this.numOfChildren = numOfChildren;
         calculateTotalNumberOfGuest();
     }
 
