@@ -23,7 +23,7 @@ public class UserServiceImpl implements IUserService{
 
     @Override
     public User registerUser(User user) {
-        if(userRepository.existByEmail(user.getEmail())) {
+        if(userRepository.existsByEmail(user.getEmail())) {
             throw new UserAlreadyExistException(user.getEmail() + " already exists");
         }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
@@ -43,7 +43,7 @@ public class UserServiceImpl implements IUserService{
     public void deleteUser(String email) {
         User theUser = getUser(email);
         if (theUser != null) {
-            userRepository.deleteByEmaik( email);
+            userRepository.deleteByEmail( email);
         }
     }
 
