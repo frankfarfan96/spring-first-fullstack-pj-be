@@ -14,14 +14,13 @@ import org.springframework.stereotype.Component;
 import java.security.Key;
 import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Component
 public class JwtUtils {
     private static final Logger logger = LoggerFactory.getLogger(JwtUtils.class);
-    @Value("${security.jwt.secret}")
+    @Value("${security.jwt.jwtSecret}")
     private String jwtSecret;
-    @Value("${security.jwt.jwtExpirationTime}")
+    @Value("${security.jwt.expirationInMils}")
     private int jwtExpirationTime;
 
     public String generateJwtTokenForUser(Authentication authentication) {
